@@ -21,6 +21,9 @@ SRCS := $(SRC_DIR)/malloc.c
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
+LIBFT_DIR = ./libft
+LIBFT = $(LIBFT_DIR)/libft.a
+
 all: $(NAME)
 
 # Mandatory part
@@ -33,10 +36,15 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 	@echo "$(CYAN)Compiled: $(notdir $<)$(RESET)"
 
-$(NAME): $(OBJS)
+$(NAME): $(LIBFT) $(OBJS)
 	@echo "$(YELLOW)Linking $(NAME)...$(RESET)"
-	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
+	@$(CC) $(OBJS) $(LIBFT) $(HEADERS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) built successfully!$(RESET)"
+
+$(LIBFT):
+	@echo "$(YELLOW)Building libft...$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR)
+	@echo "$(GREEN)Libft built successfully!$(RESET)"
 
 # Clean rules
 clean:
