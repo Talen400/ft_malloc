@@ -17,7 +17,8 @@ CFLAGS := -g -Wextra -Wall -Werror -pthread -pedantic
 SRC_DIR := ./srcs
 OBJ_DIR := ./objs
 
-SRCS := $(SRC_DIR)/malloc.c
+SRCS := $(SRC_DIR)/malloc.c \
+		$(SRC_DIR)/debug.c
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

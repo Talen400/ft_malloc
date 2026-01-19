@@ -20,60 +20,28 @@
 
 pthread_mutex_t	g_malloc_mutex;
 
-typedef struct	s_block
-{
-	size_t			size; // Tamanho do bloco
-	bool			is_free; // Se o bloco está livre ou não
-	struct s_block	*next;
-	void			*s_break; // endereço do bloco
-}	t_block;
-
 t_block	**get_block_base(void)
 {
-	static t_block	*block;
+	static t_block	*block = NULL;
 
-	block = NULL;
 	return (&block);
 }
-
+/*
 t_block	*find_free_block(t_block **node, size_t size)
 {
-	t_block	*pointer;
-
-	pointer = *node;
-	while (node)
-	{
-		if (pointer->is_free == 1)
-			return (pointer);
-		pointer =:
-	}
-	return (pointer);
+	return (NULL);
 }
-
+*/
 void	*memory_ten(size_t size)
 {
-	void	*ptr;
-	t_block	**base;
-	t_block	*node;
-	
-	base = get_block_base();
-	if (*base)
-	{
-		node = find_free_block(base, size);
-		if (node)
-			node = 
-	}
-	else
-	{
-		*base->s_break = sbrk(size);
-	}
-	/*
-	ptr = sbrk(size);
-	if (ptr == (void *) -1)
+	t_block	*head;
+
+	head = sbrk(sizeof(t_block) + size);
+	if (head == (void *) -1)
 		return (NULL);
-	*/
-	
-	return (ptr);
+	head->size = size;
+	head->is_free = false;
+	return (head + 1);
 }
 
 void	*memory_large(size_t size)
@@ -81,6 +49,7 @@ void	*memory_large(size_t size)
 	void	*ptr;
 
 	ptr = NULL;
+	(void ) size;
 	return (ptr);
 }
 
@@ -111,13 +80,9 @@ void	ft_free(void *ptr)
 int	main(void)
 {
 	void	*str;
-	void	*s_break;
 
-	s_break = sbrk(0);
 	str = ft_malloc(10);
-	ft_printf("initial break: %p \n", s_break);
-	ft_printf(" pointer of memory: 	%p \n", str);
-	ft_printf(" break actually: %p \n", sbrk(0));
+	debug_heap();
 	ft_free(str);
 	return (0);
 }

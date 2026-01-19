@@ -18,7 +18,18 @@
  * To be thread-safe, is necessary a variable global mutex
  */
 
+typedef struct	s_block
+{
+	size_t			size; // Tamanho do bloco
+	bool			is_free; // Se o bloco está livre ou não
+	struct s_block	*next;
+	void			*s_break; // endereço do bloco
+}	t_block;
+
+t_block	**get_block_base(void);
 void	*ft_malloc(size_t size);
+void	debug_heap();
+
 extern pthread_mutex_t	g_malloc_mutex;
 
 #endif
